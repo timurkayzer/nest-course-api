@@ -15,13 +15,13 @@ import { TopPageModel } from './top-page.model';
 @Controller('top-page')
 export class TopPageController {
 
-	constructor(private configService: ConfigService) {
+	constructor() {
 
 	}
 
 	@Post()
 	async create(@Body() dto: Omit<TopPageModel, '_id'>) {
-		this.configService.get('TEST')
+		// this.configService.get('TEST')
 		return null;
 	}
 
