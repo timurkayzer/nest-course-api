@@ -10,9 +10,13 @@ export enum TopLevelCategory {
 }
 
 class TopPageHH {
+    @Prop()
     count: number;
+    @Prop()
     juniorSalary: number;
+    @Prop()
     middleSalary: number;
+    @Prop()
     seniorSalary: number;
 }
 
@@ -36,7 +40,7 @@ export class TopPageModel {
     category: string;
     @Prop({ type: TopPageHH })
     hh?: TopPageHH;
-    @Prop({ type: [TopPageAdvantage] })
+    @Prop({ type: () => [TopPageAdvantage] })
     advantages: TopPageAdvantage[]
     @Prop()
     seoText: string;

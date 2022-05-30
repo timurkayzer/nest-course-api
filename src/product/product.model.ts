@@ -1,8 +1,10 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document, ObjectId } from "mongoose";
+import { Document } from "mongoose";
 
 class ProductCharacteristic {
+	@Prop()
 	name: string;
+	@Prop()
 	value: string;
 }
 
