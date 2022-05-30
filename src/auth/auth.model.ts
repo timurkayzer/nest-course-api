@@ -1,18 +1,17 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, ObjectId } from "mongoose";
 
-export type AuthModelDocument = AuthModel & Document;
-@Schema()
+export type AuthDocument = AuthModel & Document;
+@Schema({
+    timestamps: true
+})
 export class AuthModel {
-    _id: ObjectId;
-    @Prop()
+    @Prop({
+        unique: true
+    })
     email: string;
     @Prop()
     passwordHash: string;
-    @Prop()
-    createdAt: Date;
-    @Prop()
-    updatedAt: Date;
 }
 
-export const AuthModelSchema = SchemaFactory.createForClass(AuthModel);
+export const AuthSchema = SchemaFactory.createForClass(AuthModel);
