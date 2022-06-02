@@ -19,7 +19,20 @@ export class ReviewService {
     async findByProductId(id: string): Promise<ReviewDocument[]> {
         return await this.reviewModel.find({
             productId: id
-        })
+        });
+    }
+
+    async deleteByProductId(id: string): Promise<number | null> {
+        const res = await this.reviewModel.deleteMany({
+            productId: id
+        });
+
+        if (res?.deletedCount >= 0) {
+            return res.deletedCount;
+        }
+        else {
+            return null;
+        }
     }
 
 }

@@ -29,4 +29,16 @@ export class ReviewController {
 	async getByProduct(@Param('id') id: string) {
 		return await this.reviewService.findByProductId(id);
 	}
+
+	@Delete('product/:id')
+	async deleteByProduct(@Param('id') id: string) {
+		const deletedDocCount = await this.reviewService.deleteByProductId(id);
+
+		if (deletedDocCount) {
+			return { deletedAmount: deletedDocCount };
+		}
+		else {
+			throw new HttpException(NOT_FOUND, HttpStatus.NOT_FOUND);
+		}
+	}
 }
