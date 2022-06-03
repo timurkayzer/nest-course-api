@@ -1,1 +1,1 @@
-const NOT_FOUND = 'Отзыв не найден';
+export const NOT_FOUND = 'Отзыв не найден';

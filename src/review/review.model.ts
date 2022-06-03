@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, ObjectId, Schema as MongooseSchema } from "mongoose";
-import { ProductModel } from "src/product/product.model";
 
 export type ReviewDocument = ReviewModel & Document;
 

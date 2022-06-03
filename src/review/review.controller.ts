@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Param, Post, Get, HttpException, HttpStatus } from '@nestjs/common';
-import { CreateReviewDto } from './create-reciew.dto';
+import { CreateReviewDto } from './create-review.dto';
 import { ReviewModel } from './review.model';
 import { ReviewService } from './review.service';
+import { NOT_FOUND } from './review.constants';
 
 @Controller('review')
 export class ReviewController {
@@ -33,7 +34,7 @@ export class ReviewController {
 	@Delete('product/:id')
 	async deleteByProduct(@Param('id') id: string) {
 		const deletedDocCount = await this.reviewService.deleteByProductId(id);
-
+		console.log(deletedDocCount);
 		if (deletedDocCount) {
 			return { deletedAmount: deletedDocCount };
 		}
