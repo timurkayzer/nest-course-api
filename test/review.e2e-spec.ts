@@ -39,7 +39,7 @@ describe('AppController (e2e)', () => {
 
 
 
-    it('POST /review - SUCCESS', () => {
+    it('POST /review - SUCCESS', async () => {
         return request(app.getHttpServer())
             .post('/review')
             .send(testDto)

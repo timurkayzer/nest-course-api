@@ -17,6 +17,7 @@ export class ReviewService {
     }
 
     async findByProductId(id: string): Promise<ReviewDocument[]> {
+        console.log(id);
         return await this.reviewModel.find({
             productId: id
         });
