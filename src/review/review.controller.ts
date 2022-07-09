@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Param, Post, Get, HttpException, HttpStatus, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateReviewDto } from './create-review.dto';
-import { ReviewModel } from './review.model';
 import { ReviewService } from './review.service';
 import { NOT_FOUND } from './review.constants';
+
 
 @Controller('review')
 export class ReviewController {
