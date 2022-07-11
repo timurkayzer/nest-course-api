@@ -1,0 +1,1 @@
+export const ALREADY_REGISTERED = "Пользователь уже зарегистрирован";
