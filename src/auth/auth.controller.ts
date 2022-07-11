@@ -33,7 +33,7 @@ export class AuthController {
 		const loginUser = await this.authService.loginUser(dto);
 
 		if (loginUser) {
-			return loginUser;
+			return { token: loginUser };
 		}
 		else {
 			throw new ForbiddenException();
