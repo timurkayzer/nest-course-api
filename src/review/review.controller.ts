@@ -30,6 +30,7 @@ export class ReviewController {
 		}
 	}
 
+	@UseGuards(JwtAuthGuard)
 	@Get('product/:id')
 	async getByProduct(@Param('id') id: string, @UserEmail() email: string) {
 		console.log(email);
