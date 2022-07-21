@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Param, Post, Get, HttpException, HttpStatus, 
 import { CreateReviewDto } from './create-review.dto';
 import { ReviewService } from './review.service';
 import { NOT_FOUND } from './review.constants';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
-import { UserEmail } from 'src/decorators/user-email.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { UserEmail } from '../decorators/user-email.decorator';
 
 
 @UseGuards(JwtAuthGuard)
@@ -30,17 +30,14 @@ export class ReviewController {
 		}
 	}
 
-	@UseGuards(JwtAuthGuard)
 	@Get('product/:id')
 	async getByProduct(@Param('id') id: string, @UserEmail() email: string) {
-		console.log(email);
 		return await this.reviewService.findByProductId(id);
 	}
 
 	@Delete('product/:id')
 	async deleteByProduct(@Param('id') id: string) {
 		const deletedDocCount = await this.reviewService.deleteByProductId(id);
-		console.log(deletedDocCount);
 		if (deletedDocCount) {
 			return { deletedAmount: deletedDocCount };
 		}

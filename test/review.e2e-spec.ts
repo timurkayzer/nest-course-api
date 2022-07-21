@@ -25,6 +25,7 @@ let createdId: string;
 
 describe('AppController (e2e)', () => {
     let app: INestApplication;
+    let token: string;
 
     beforeEach(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -35,6 +36,14 @@ describe('AppController (e2e)', () => {
 
         app = moduleFixture.createNestApplication();
         await app.init();
+
+        const { body } = await request(app.getHttpServer())
+            .post('/auth/login')
+            .send({
+                login: "root",
+                password: "123"
+            });
+        token = body.token;
     });
 
 
@@ -42,6 +51,7 @@ describe('AppController (e2e)', () => {
     it('POST /review - SUCCESS', async () => {
         return request(app.getHttpServer())
             .post('/review')
+            .auth(token, { type: 'bearer' })
             .send(testDto)
             .expect(201)
             .then(({ body }: request.Response) => {
@@ -53,6 +63,7 @@ describe('AppController (e2e)', () => {
     it('GET /review/product/ - SUCCESS', () => {
         return request(app.getHttpServer())
             .get('/review/product/' + productId)
+            .auth(token, { type: 'bearer' })
             .expect(200)
             .then(({ body }: request.Response) => {
                 expect(body.length).toBeGreaterThan(0);
@@ -63,6 +74,7 @@ describe('AppController (e2e)', () => {
     it('GET /review/product/ - FAIL', () => {
         return request(app.getHttpServer())
             .get('/review/product/' + wrongProductId)
+            .auth(token, { type: 'bearer' })
             .expect(200)
             .then(({ body }: request.Response) => {
                 expect(body.length).toBe(0);
@@ -72,16 +84,18 @@ describe('AppController (e2e)', () => {
     it('DELETE /review/product/ - FAIL', () => {
         return request(app.getHttpServer())
             .delete('/review/product/' + wrongProductId)
+            .auth(token, { type: 'bearer' })
             .expect(HttpStatus.NOT_FOUND);
     });
 
     it('DELETE /review - SUCCESS', () => {
         return request(app.getHttpServer())
             .delete('/review/' + createdId)
+            .auth(token, { type: 'bearer' })
             .expect(200);
     });
 
-    afterEach(() => {
+    afterAll(() => {
         disconnect();
         app.close();
     })
