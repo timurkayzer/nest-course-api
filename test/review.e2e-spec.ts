@@ -90,7 +90,7 @@ describe('AppController (e2e)', () => {
 
     it('DELETE /review - SUCCESS', () => {
         return request(app.getHttpServer())
-            .delete('/review/' + createdId)
+            .delete('/review/' + createdId.toString())
             .auth(token, { type: 'bearer' })
             .expect(200);
     });
