@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ReviewModel } from 'src/review/review.model';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductDto } from './dto/find-product.dto';
 import { ProductDocument, ProductModel } from './product.model';
@@ -30,14 +31,34 @@ export class ProductService {
         return await this.productModel.aggregate([
             {
                 $match: {
-
-                },
-                $limit: search.limit,
+                    categories: search.category
+                }
+            },
+            {
+                $sort: {
+                    _id: 1
+                }
+            },
+            { $limit: search.limit },
+            {
+                $lookup: {
+                    from: 'Review',
+                    localField: '_id',
+                    foreignField: 'productId',
+                    as: 'review'
+                }
+            },
+            {
                 $addFields: {
-
+                    reviewCount: {
+                        $size: '$review'
+                    },
+                    reviewAvg: {
+                        $avg: '$review.rating'
+                    }
                 }
             }
-        ]);
+        ]) as (ProductModel & { review: ReviewModel[], reviewCount: number, reviewAvg: number })[];
 
     }
 }
