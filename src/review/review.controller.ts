@@ -4,6 +4,7 @@ import { ReviewService } from './review.service';
 import { NOT_FOUND } from './review.constants';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { UserEmail } from '../decorators/user-email.decorator';
+import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 
 
 @UseGuards(JwtAuthGuard)
@@ -12,14 +13,14 @@ export class ReviewController {
 
 	constructor(private reviewService: ReviewService) { }
 
-	@Post()
+	@Post('')
 	@UsePipes(new ValidationPipe())
 	async create(@Body() dto: CreateReviewDto) {
 		return await this.reviewService.create(dto);
 	}
 
 	@Delete(':id')
-	async get(@Param('id') id: string) {
+	async get(@Param('id', IdValidationPipe) id: string) {
 		const deletedDoc = await this.reviewService.delete(id);
 
 		if (deletedDoc) {
@@ -31,12 +32,12 @@ export class ReviewController {
 	}
 
 	@Get('product/:id')
-	async getByProduct(@Param('id') id: string, @UserEmail() email: string) {
+	async getByProduct(@Param('id', IdValidationPipe) id: string, @UserEmail() email: string) {
 		return await this.reviewService.findByProductId(id);
 	}
 
 	@Delete('product/:id')
-	async deleteByProduct(@Param('id') id: string) {
+	async deleteByProduct(@Param('id', IdValidationPipe) id: string) {
 		const deletedDocCount = await this.reviewService.deleteByProductId(id);
 		if (deletedDocCount) {
 			return { deletedAmount: deletedDocCount };

@@ -42,19 +42,19 @@ export class ProductService {
             { $limit: search.limit },
             {
                 $lookup: {
-                    from: 'Review',
+                    from: 'reviewmodels',
                     localField: '_id',
                     foreignField: 'productId',
-                    as: 'review'
+                    as: 'reviews'
                 }
             },
             {
                 $addFields: {
                     reviewCount: {
-                        $size: '$review'
+                        $size: '$reviews'
                     },
                     reviewAvg: {
-                        $avg: '$review.rating'
+                        $avg: '$reviews.rating'
                     }
                 }
             }

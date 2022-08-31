@@ -11,6 +11,7 @@ import {
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
+import { IdValidationPipe } from 'src/pipes/id-validation.pipe';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FindProductDto } from './dto/find-product.dto';
 import { PRODUCT_NOT_FOUND } from './product.constants';
@@ -22,13 +23,13 @@ export class ProductController {
 
 	constructor(private readonly productService: ProductService) { }
 
-	@Post()
+	@Post('')
 	async create(@Body() dto: CreateProductDto) {
 		return await this.productService.create(dto);
 	}
 
 	@Get(':id')
-	async get(@Param('id') id: string) {
+	async get(@Param('id', IdValidationPipe) id: string) {
 		const product = await this.productService.findById(id);
 		if (product) {
 			return product;
@@ -39,7 +40,7 @@ export class ProductController {
 	}
 
 	@Delete(':id')
-	async delete(@Param('id') id: string) {
+	async delete(@Param('id', IdValidationPipe) id: string) {
 		const deletedProduct = await this.productService.delete(id);
 		if (deletedProduct) {
 			return deletedProduct;
@@ -50,7 +51,7 @@ export class ProductController {
 	}
 
 	@Patch(':id')
-	async update(@Param('id') id: string, @Body() dto: ProductModel) {
+	async update(@Param('id', IdValidationPipe) id: string, @Body() dto: ProductModel) {
 		const updatedProduct = await this.productService.update(id, dto);
 		if (updatedProduct) {
 			return updatedProduct;
@@ -64,6 +65,6 @@ export class ProductController {
 	@HttpCode(200)
 	@Post('search')
 	async search(@Body() dto: FindProductDto) {
-		await this.productService.search(dto);
+		return await this.productService.search(dto);
 	}
 }
