@@ -1,12 +1,10 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ObjectId } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export enum TopLevelCategory {
-    Courses,
-    Services,
-    Books,
-    Products
+    Courses = 0,
+    Services = 1,
+    Books = 2,
+    Products = 3
 }
 
 class TopPageHH {
@@ -21,7 +19,9 @@ class TopPageHH {
 }
 
 class TopPageAdvantage {
+    @Prop()
     title: string;
+    @Prop()
     description: string;
 }
 

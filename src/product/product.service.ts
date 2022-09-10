@@ -59,7 +59,7 @@ export class ProductService {
                     reviews: {
                         $function: {
                             body: `function (reviews) {
-                                return reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                                return reviews.sort((a, b) => a.title.localeCompare(b.title))
                             }`,
                             args: ['$reviews'],
                             lang: 'js'
