@@ -56,6 +56,8 @@ export class TopPageModel {
 
 const TopPageSchema = SchemaFactory.createForClass(TopPageModel);
 
+TopPageSchema.clearIndexes();
+
 TopPageSchema.index({
     title: "text",
     seoText: "text",
