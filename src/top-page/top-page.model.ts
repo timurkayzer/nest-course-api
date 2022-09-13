@@ -26,8 +26,10 @@ class TopPageAdvantage {
 }
 
 export type TopPageDocument = TopPageModel & Document;
+
 @Schema({
-    timestamps: true
+    timestamps: true,
+    autoIndex: true
 })
 export class TopPageModel {
     @Prop({ enum: TopLevelCategory })
@@ -46,8 +48,21 @@ export class TopPageModel {
     seoText: string;
     @Prop()
     tagsTitle: string;
-    @Prop({ type: [String] })
+    @Prop({
+        type: [String],
+    })
     tags: string[];
 }
 
-export const TopPageSchema = SchemaFactory.createForClass(TopPageModel);
+const TopPageSchema = SchemaFactory.createForClass(TopPageModel);
+
+TopPageSchema.index({
+    title: "text",
+    seoText: "text",
+    tagsTitle: "text",
+    tags: "text",
+    "advantages.title": "text",
+    "advantages.description": "text",
+})
+
+export { TopPageSchema };

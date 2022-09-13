@@ -25,6 +25,7 @@ export class TopPageController {
 	) { }
 
 	@Post()
+	@UsePipes(new ValidationPipe())
 	async create(@Body() dto: CreateTopPageDto) {
 		return await this.topPageService.create(dto);
 	}
@@ -52,6 +53,7 @@ export class TopPageController {
 	}
 
 	@Patch(':id')
+	@UsePipes(new ValidationPipe())
 	async update(@Param('id', IdValidationPipe) id: string, @Body() dto: TopPageModel) {
 		const updatedTopPage = await this.topPageService.update(id, dto);
 
@@ -67,5 +69,11 @@ export class TopPageController {
 	@UsePipes(new ValidationPipe())
 	async search(@Body() dto: FindTopPageDto) {
 		return await this.topPageService.search(dto);
+	}
+
+	@HttpCode(200)
+	@Get('search/by-text/:text')
+	async searchByText(@Param('text') searchText: string) {
+		return await this.topPageService.searchByText(searchText);
 	}
 }

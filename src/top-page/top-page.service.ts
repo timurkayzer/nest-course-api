@@ -65,4 +65,14 @@ export class TopPageService {
             }
         ]) as (TopPageModel & { productsCount: number, products: ProductModel[] })[];
     }
+
+    async searchByText(searchText: string) {
+        return await this.topPageModel.find({
+            $text: {
+                $search: searchText,
+                $caseSensitive: false,
+                $diacriticSensitive: false
+            }
+        });
+    }
 }
