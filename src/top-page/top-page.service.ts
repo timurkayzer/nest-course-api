@@ -12,20 +12,32 @@ export class TopPageService {
         @InjectModel(TopPageModel.name) private topPageModel: Model<TopPageDocument>
     ) { }
 
-    async create(dto: CreateTopPageDto) {
-        return await this.topPageModel.create(dto);
+    create(dto: CreateTopPageDto) {
+        return this.topPageModel.create(dto);
     }
 
-    async delete(id: string) {
-        return await this.topPageModel.findByIdAndDelete(id);
+    delete(id: string) {
+        return this.topPageModel.findByIdAndDelete(id);
     }
 
-    async getOne(id: string) {
-        return await this.topPageModel.findById(id);
+    getByCategory(id: number) {
+        return this.topPageModel.aggregate()
+            .match({
+                firstCategory: id
+            })
+            .group({
+                _id: { secondCategory: '$secondCategory' },
+                pages: { $push: { alias: '$alias', title: '$title' } }
+            });
+
     }
 
-    async update(id: string, dto: TopPageModel) {
-        return await this.topPageModel.findByIdAndUpdate(id, dto);
+    getOne(id: string) {
+        return this.topPageModel.findById(id);
+    }
+
+    update(id: string, dto: TopPageModel) {
+        return this.topPageModel.findByIdAndUpdate(id, dto);
     }
 
     // select dto's with products by tags and by category
@@ -63,7 +75,7 @@ export class TopPageService {
                     // }
                 }
             }
-        ]) as (TopPageModel & { productsCount: number, products: ProductModel[] })[];
+        ]) as (TopPageModel & { productsCount: number, products: ProductModel[]; })[];
     }
 
     async searchByText(searchText: string) {

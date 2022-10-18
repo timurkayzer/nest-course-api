@@ -41,6 +41,17 @@ export class TopPageController {
 		return foundTopPage;
 	}
 
+	@Get('top-category/:id')
+	async getByCategory(@Param('id') id: string) {
+		const foundTopPage = await this.topPageService.getByCategory(+id);
+
+		if (!foundTopPage) {
+			throw new NotFoundException();
+		}
+
+		return foundTopPage;
+	}
+
 	@Delete(':id')
 	async delete(@Param('id', IdValidationPipe) id: string) {
 		const deletedTopPage = await this.topPageService.delete(id);
